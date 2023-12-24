@@ -1,0 +1,90 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *link;
+};
+
+struct node *front = NULL;
+struct node *rear = NULL;
+
+void enque(int data) {
+    struct node *newnode;
+    newnode = malloc(sizeof(struct node));
+    newnode->data = data;
+    newnode->link = NULL;
+
+    if (rear == NULL) {
+        front = newnode;
+        rear = newnode;
+    } else {
+        rear->link = newnode;
+        rear = newnode;
+    }
+}
+
+int deque() {
+    struct node *temp;
+    int value;
+    if (front == NULL) {
+        printf("queue underflow\n");
+        return -1;
+    }
+    temp = front;
+    value = temp->data;
+    front = front->link;
+    free(temp);
+
+    return value;
+}
+
+void print() {
+    struct node *temp;
+    temp = front;
+    if (front == NULL) {
+        printf("queue is underflow\n");
+        return;
+    }
+    printf("Elements in the queue are: ");
+    while (temp) {
+        printf("%d ", temp->data);
+        temp = temp->link;
+    }
+    printf("\n");
+}
+
+int main() {
+    int choice, data;
+    while (1) {
+        printf("\n");
+        printf("1. Enqueue\n");
+        printf("2. Dequeue\n");
+        printf("3. Print\n");
+        printf("4. Quit\n");
+        printf("Enter the choice: ");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                printf("Enter the element: ");
+                scanf("%d", &data);
+                enque(data);
+                break;
+            case 2:
+                data = deque();
+                if (data != -1) {
+                    printf("Deleted element is %d\n", data);
+                }
+                break;
+            case 3:
+                print();
+                break;
+            case 4:
+                exit(0);
+            default:
+                printf("Error!!!\n");
+        }
+    }
+
+    return 0;
+}
